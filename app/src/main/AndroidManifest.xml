@@ -40,7 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddRestaurantActivity"></activity>
+        <activity android:name=".AddRestaurantActivity" />
+        <activity android:name=".AddClinicActivity" />
+        <activity android:name=".ClinicListingView"></activity>
     </application>
 
 </manifest>
