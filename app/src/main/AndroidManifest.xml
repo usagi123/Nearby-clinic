@@ -42,7 +42,8 @@
         </activity>
         <activity android:name=".AddRestaurantActivity" />
         <activity android:name=".AddClinicActivity" />
-        <activity android:name=".ClinicListingView"></activity>
+        <activity android:name=".ClinicListingView" />
+        <activity android:name=".EditClinicActivity"></activity>
     </application>
 
 </manifest>

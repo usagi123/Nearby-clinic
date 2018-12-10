@@ -1,6 +1,7 @@
 package com.example.imhikarucat.myapplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class ClinicListingView extends AppCompatActivity {
 
         listView = findViewById(R.id.ListView);
         clinics = new ArrayList<Clinic>();
+
         new getClinic().execute();
     }
 
@@ -97,11 +99,11 @@ public class ClinicListingView extends AppCompatActivity {
         public class ShowUpMenuActivity implements PopupMenu.OnMenuItemClickListener {
 
             private Activity context;
-            private Integer excerNum;
+            private Integer clinicID;
 
-            ShowUpMenuActivity(Activity context, Integer excerNum) {
+            ShowUpMenuActivity(Activity context, Integer clinicID) {
                 this.context = context;
-                this.excerNum = excerNum;
+                this.clinicID = clinicID;
             }
 
             void showPopup(View v){
@@ -112,13 +114,17 @@ public class ClinicListingView extends AppCompatActivity {
             }
 
             @Override public boolean onMenuItemClick(MenuItem item){
+
                 switch (item.getItemId()){
                     case R.id.delete:
-//                        deleteExcercise(excerNum);
+                        deleteClinic(clinicID);
+                        clinics.clear();
+                        listView.invalidateViews();
+                        new getClinic().execute();
                         Toast.makeText(context,"item has been deleted",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.edit:
-//                        editExcercise(excerNum);
+                        editClinic(clinicID);
                         break;
                     case R.id.map:
                         Toast.makeText(context,"Map",Toast.LENGTH_LONG).show();
@@ -130,5 +136,44 @@ public class ClinicListingView extends AppCompatActivity {
                 return false;
             }
         }
+    }
+
+    public void editClinic(int id){
+        Intent intent = new Intent(this,EditClinicActivity.class);
+        intent.putExtra("sentName",clinics.get(id).name);
+        intent.putExtra("sentId",clinics.get(id).id);
+        intent.putExtra("sentRating",clinics.get(id).rating);
+        intent.putExtra("sentLat",clinics.get(id).latitude);
+        intent.putExtra("sentLon",clinics.get(id).longitude);
+        intent.putExtra("sentImpression",clinics.get(id).impression);
+        intent.putExtra("sentLead",clinics.get(id).lead_phys);
+        intent.putExtra("sentSpecialize",clinics.get(id).specialization);
+        intent.putExtra("sentAvgPrice",clinics.get(id).avg_price);
+        intent.putExtra("requestType","edit");
+        startActivityForResult(intent,1);
+    }
+
+    private class DeleteClinic extends AsyncTask<Void,Void,Void> {
+        String jsonString = "";
+        String clinicID = "";
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            jsonString = HttpHandler.deleteRequest(MapsActivity.STUDENT_API + "/" + clinicID);
+            Log.d(TAG, "doInBackground: " + jsonString);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            final ArrayList<String> names = new ArrayList<String>();
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    public void deleteClinic (int id){
+        DeleteClinic deleteClinic = new DeleteClinic();
+        deleteClinic.clinicID = clinics.get(id).id;
+        deleteClinic.execute();
     }
 }

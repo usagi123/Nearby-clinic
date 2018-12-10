@@ -44,9 +44,7 @@ import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    //https://my-json-server.typicode.com/cristalngo/demo/students
-    public static final String STUDENT_API = "https://vu-nodejs-backend-webprog-a2.herokuapp.com/students";
-    public static final String STUDENT_API_INDI = "https://vu-nodejs-backend-webprog-a2.herokuapp.com/student";
+    public static final String STUDENT_API = "https://clinicandroidasn2.herokuapp.com/clinics";
 
     private String jsonString = "";
 
@@ -118,20 +116,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onLocationResult(LocationResult locationResult) {
                         super.onLocationResult(locationResult);
                         Location location = locationResult.getLastLocation();
-                        LatLng latLng = new LatLng(location.getLatitude(),
-                                location.getLongitude());
-                        mMap.addMarker(new MarkerOptions().position(latLng)
-                                .icon(BitmapDescriptorFactory.defaultMarker()));
+                        if (location != null){
+                            LatLng latLng = new LatLng(location.getLatitude(),
+                                    location.getLongitude());
+                            mMap.addMarker(new MarkerOptions().position(latLng)
+                                    .icon(BitmapDescriptorFactory.defaultMarker()));
 //                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.0f));
-                        //  mMap.clear();
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.0f));
+                            //  mMap.clear();
 //                        mMap.addMarker(new MarkerOptions().position(latLng)
 //                                        .icon(BitmapDescriptorFactory.defaultMarker()));
-                        Toast.makeText(MapsActivity.this,
-                                "(" + location.getLatitude() + ","+
-                                        location.getLongitude() +")",
-                                Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(MapsActivity.this,
+                                    "(" + location.getLatitude() + ","+
+                                            location.getLongitude() +")",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MapsActivity.this, "Please wait for your location service to start", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
                 ,null);
@@ -145,15 +146,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-                        mMap.addMarker(new MarkerOptions().position(latLng)
-                                .icon(BitmapDescriptorFactory.defaultMarker()));
-//                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.0f));
-                        Toast.makeText(MapsActivity.this,
-                                "(" + location.getLatitude() + ","+
-                                        location.getLongitude() +")",
-                                Toast.LENGTH_SHORT).show();
+                        if (location != null){
+                            LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                            mMap.addMarker(new MarkerOptions().position(latLng)
+                                    .icon(BitmapDescriptorFactory.defaultMarker()));
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.0f));
+                            Toast.makeText(MapsActivity.this,
+                                    "(" + location.getLatitude() + ","+
+                                            location.getLongitude() +")",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MapsActivity.this, "Please wait for your location service to start", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
@@ -164,18 +168,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MY_PERMISSION_REQUEST_LOCATION);
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        //mMap.clear();
-        new getClinic().execute();
-    }
 
     public void onViewAll(View view) {
         Intent intent = new Intent(MapsActivity.this, ClinicListingView.class);
         startActivity(intent);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if (mMap != null){
+            mMap.clear();
+        }
+        new getClinic().execute();
+    }
 
     public class getClinic extends AsyncTask<Void,Void,Void>{
         String jsonString="";
@@ -200,7 +206,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     );
                     mMap.addMarker(new MarkerOptions().position(position)
                             .icon(BitmapDescriptorFactory.fromResource(
-                                    R.drawable.ic_uni
+                                    R.drawable.ic_clinic
                             ))
                             .title("Clinic")
                             .snippet(jsonObject.getString("name")));

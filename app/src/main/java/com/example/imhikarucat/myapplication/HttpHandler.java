@@ -1,6 +1,9 @@
 package com.example.imhikarucat.myapplication;
 
+import android.telecom.Call;
 import android.util.Log;
+
+import com.google.android.gms.common.api.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,12 +14,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 import static android.content.ContentValues.TAG;
 
 public class HttpHandler {
 
+    //Read request
     public static String getRequest(String urlStr){
         //urlStr = address ie: localhost:8000
 
@@ -70,22 +75,7 @@ public class HttpHandler {
         return status;
     }
 
-    public static String deleteRequest(String urlStr, String id){
-        String status = "";
-        try{
-            URL url = new URL(urlStr + "/" + id);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestMethod("DELETE");
-            status = conn.getResponseCode() + ": " + conn.getResponseMessage();
-            conn.connect();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return status;
-    }
-
+    //Create method
     public static String postClinic(String urlStr, Clinic clinic){
         String status = "";
 
@@ -123,6 +113,64 @@ public class HttpHandler {
             e.printStackTrace();
         }
         return status;
+    }
 
+    //Update method
+    public static String editRequest(String urlStr, Clinic clinic){
+        String status = "";
+        try {
+            URL url = new URL(urlStr);
+            HttpURLConnection conn = (HttpURLConnection)
+                    url.openConnection();
+            //Step 2: define the request
+            conn.setRequestMethod("PUT");
+            conn.setRequestProperty("Content-Type","application/json");
+            //step 3: prepare the post data
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", clinic.name);
+            jsonObject.put("rating", clinic.rating);
+            jsonObject.put("latitute", clinic.latitude);
+            jsonObject.put("longitute", clinic.longitude);
+            jsonObject.put("impression", clinic.impression);
+            jsonObject.put("lead_physician", clinic.lead_phys);
+            jsonObject.put("specialization",clinic.specialization);
+            jsonObject.put("average_price",clinic.avg_price);
+            //step 4: send json to the webservice
+            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+            os.writeBytes(jsonObject.toString());
+            os.flush();
+            status = conn.getResponseCode() + ": " + conn.getResponseMessage();
+            os.close();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+
+    //Delete method
+    public static String deleteRequest(String urlStr){
+        String status = "";
+        try{
+            URL url = new URL(urlStr);
+            Log.d(TAG, "DeleteClinicRequest: " + urlStr);
+            HttpURLConnection conn = (HttpURLConnection)
+                    url.openConnection();
+            //Step 2: define the request
+            conn.setRequestMethod("DELETE");
+            conn.setRequestProperty("Content-Type","application/json");
+            status = conn.getResponseCode() + ": " + conn.getResponseMessage();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return status;
     }
 }

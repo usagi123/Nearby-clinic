@@ -36,6 +36,7 @@ public class CustomListView extends ArrayAdapter<Clinic> {
         View r = convertView;
         ViewHolder viewHolder = null;
 
+        geocoder = new Geocoder(context,Locale.getDefault());
 
         if(r == null){
             LayoutInflater layoutInflater = context.getLayoutInflater();
@@ -49,14 +50,14 @@ public class CustomListView extends ArrayAdapter<Clinic> {
         try{
             viewHolder.name.setText(clinics.get(position).getName());
 
-//            try {
-//                addresses = geocoder.getFromLocation(clinics.get(position).getLatitude(), clinics.get(position).getLongitude(), 1);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            resultAddress = addresses.get(0).getAddressLine(0);
-//
-            viewHolder.address.setText(clinics.get(0).getAddress());
+            try {
+                addresses = geocoder.getFromLocation(clinics.get(position).getLatitude(), clinics.get(position).getLongitude(), 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            resultAddress = addresses.get(0).getAddressLine(0);
+
+            viewHolder.address.setText(resultAddress);
             viewHolder.rating.setText(Integer.toString(clinics.get(position).getRating()));
             viewHolder.impression.setText(clinics.get(position).getImpression());
             viewHolder.lead.setText((clinics.get(position).getLead_phys()));
