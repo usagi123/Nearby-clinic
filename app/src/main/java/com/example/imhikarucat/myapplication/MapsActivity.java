@@ -179,6 +179,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onResume();
         if (mMap != null){
             mMap.clear();
+            Double lat, lon;
+            Intent intent = getIntent();
+            lat = intent.getDoubleExtra("viewLat",0);
+            lon = intent.getDoubleExtra("viewLon",0);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 16.0f));
         }
         new getClinic().execute();
     }

@@ -58,8 +58,8 @@ public class ClinicListingView extends AppCompatActivity {
                     String name = jsonObject.getString("name");
                     String address = jsonObject.getString("address");
                     int rating = jsonObject.getInt("rating");
-                    Double lat = jsonObject.getDouble("latitute");
-                    Double lon = jsonObject.getDouble("longitute");
+                    final Double lat = jsonObject.getDouble("latitute");
+                    final Double lon = jsonObject.getDouble("longitute");
                     String impresstion = jsonObject.getString("impression");
                     String lead = jsonObject.getString("lead_physician");
                     String specialization = jsonObject.getString("specialization");
@@ -84,7 +84,7 @@ public class ClinicListingView extends AppCompatActivity {
                     listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
                         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                            ShowUpMenuActivity showUpMenuActivity = new ShowUpMenuActivity(ClinicListingView.this,position);
+                            ShowUpMenuActivity showUpMenuActivity = new ShowUpMenuActivity(ClinicListingView.this, position);
                             showUpMenuActivity.showPopup(view);
                             return true;
                         }
@@ -100,10 +100,13 @@ public class ClinicListingView extends AppCompatActivity {
 
             private Activity context;
             private Integer clinicID;
+            private Double lat, lon;
 
             ShowUpMenuActivity(Activity context, Integer clinicID) {
                 this.context = context;
                 this.clinicID = clinicID;
+                this.lat = lat;
+                this.lon = lon;
             }
 
             void showPopup(View v){
@@ -127,6 +130,11 @@ public class ClinicListingView extends AppCompatActivity {
                         editClinic(clinicID);
                         break;
                     case R.id.map:
+                        Intent intent = new Intent(ClinicListingView.this, MapsActivity.class);
+
+                        intent.putExtra("viewLat", clinics.get(clinicID).latitude);
+                        intent.putExtra("viewLon", clinics.get(clinicID).longitude);
+                        startActivity(intent);
                         Toast.makeText(context,"Map",Toast.LENGTH_LONG).show();
                         //send lat long data back to MapsActivity
                         //create a func in MapsActivity to move camera to designated location
@@ -156,11 +164,11 @@ public class ClinicListingView extends AppCompatActivity {
     private class DeleteClinic extends AsyncTask<Void,Void,Void> {
         String jsonString = "";
         String clinicID = "";
+        Double viewLat, viewLong;
 
         @Override
         protected Void doInBackground(Void... voids) {
             jsonString = HttpHandler.deleteRequest(MapsActivity.STUDENT_API + "/" + clinicID);
-            Log.d(TAG, "doInBackground: " + jsonString);
             return null;
         }
 
@@ -171,7 +179,7 @@ public class ClinicListingView extends AppCompatActivity {
         }
     }
 
-    public void deleteClinic (int id){
+    public void deleteClinic (int id) {
         DeleteClinic deleteClinic = new DeleteClinic();
         deleteClinic.clinicID = clinics.get(id).id;
         deleteClinic.execute();
