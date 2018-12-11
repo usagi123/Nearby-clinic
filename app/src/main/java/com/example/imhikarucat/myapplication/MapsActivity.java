@@ -87,9 +87,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getFusedLocationProviderClient(this);
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney,12));
+//        LatLng sydney = new LatLng(-34, 151);
+//        mMap.getUiSettings().setZoomControlsEnabled(true);
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney,12));
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {

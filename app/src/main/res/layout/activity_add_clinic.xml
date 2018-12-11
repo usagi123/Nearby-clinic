@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Clinic average price"
-                android:inputType="textPersonName" />
+                android:inputType="number" />
         </TableRow>
 
     </TableLayout>

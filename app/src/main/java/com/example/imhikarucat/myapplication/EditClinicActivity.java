@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+//Not working
 public class EditClinicActivity extends AppCompatActivity {
 
     private static final String TAG = "";
@@ -72,7 +73,7 @@ public class EditClinicActivity extends AppCompatActivity {
         clinic.id = id;
     }
 
-    public void confirmAction(View view) {
+    public void onConfirmEditClinic(View view) {
         clinic.name = editName.getText().toString();
         clinic.rating = Integer.parseInt(editRating.getText().toString());
         clinic.impression = editImpression.getText().toString();

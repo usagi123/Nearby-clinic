@@ -34,6 +34,14 @@ public class ClinicListingView extends AppCompatActivity {
         listView = findViewById(R.id.ListView);
         clinics = new ArrayList<Clinic>();
 
+//        new getClinic().execute();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        clinics.clear();
+        listView.invalidateViews();
         new getClinic().execute();
     }
 
@@ -56,7 +64,7 @@ public class ClinicListingView extends AppCompatActivity {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String id = jsonObject.getString("_id");
                     String name = jsonObject.getString("name");
-                    String address = jsonObject.getString("address");
+//                    String address = jsonObject.getString("address");
                     int rating = jsonObject.getInt("rating");
                     final Double lat = jsonObject.getDouble("latitute");
                     final Double lon = jsonObject.getDouble("longitute");
@@ -69,7 +77,7 @@ public class ClinicListingView extends AppCompatActivity {
                     Clinic clinic = new Clinic();
                     clinic.id = id;
                     clinic.name = name;
-                    clinic.address = address;
+//                    clinic.address = address;
                     clinic.rating = rating;
                     clinic.latitude = lat;
                     clinic.longitude = lon;
@@ -78,8 +86,9 @@ public class ClinicListingView extends AppCompatActivity {
                     clinic.specialization = specialization;
                     clinic.avg_price = averagePrice;
                     clinics.add(clinic);
-
+                    Log.d(TAG, "onPostExecute: " + clinics.size());
                     CustomListView customListView = new CustomListView(ClinicListingView.this,clinics);
+                    customListView.notifyDataSetChanged();
                     listView.setAdapter(customListView);
                     listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
@@ -139,7 +148,6 @@ public class ClinicListingView extends AppCompatActivity {
                         //send lat long data back to MapsActivity
                         //create a func in MapsActivity to move camera to designated location
                         break;
-
                 }
                 return false;
             }
