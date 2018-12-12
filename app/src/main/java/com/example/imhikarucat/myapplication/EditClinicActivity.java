@@ -42,15 +42,15 @@ public class EditClinicActivity extends AppCompatActivity {
         editAddress.setEnabled(false);
 
         clinic = new Clinic();
-        String name = intent.getExtras().get("sentName").toString();
-        String id = intent.getExtras().get("sentId").toString();
-        Integer rating = intent.getIntExtra("sentRating",0);
-        Double lat = intent.getDoubleExtra("sentLat",0);
-        Double lon = intent.getDoubleExtra("sentLon",0);
-        String impression = intent.getExtras().get("sentImpression").toString();
-        String lead = intent.getExtras().get("sentLead").toString();
-        String specialzation = intent.getExtras().get("sentSpecialize").toString();
-        Integer avgPrice = intent.getIntExtra("sentAvgPrice",0);
+        String name = intent.getExtras().get("editName").toString();
+        String id = intent.getExtras().get("editId").toString();
+        Integer rating = intent.getIntExtra("editRating",0);
+        Double lat = intent.getDoubleExtra("editLat",0);
+        Double lon = intent.getDoubleExtra("editLon",0);
+        String impression = intent.getExtras().get("editImpression").toString();
+        String lead = intent.getExtras().get("editLead").toString();
+        String specialzation = intent.getExtras().get("editSpecial").toString();
+        Integer avgPrice = intent.getIntExtra("editAvg",0);
 
         geocoder = new Geocoder(this,Locale.getDefault());
         try {

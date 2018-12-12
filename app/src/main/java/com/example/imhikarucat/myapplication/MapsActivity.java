@@ -45,9 +45,10 @@ import java.util.ArrayList;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public static final String STUDENT_API = "https://clinicandroidasn2.herokuapp.com/clinics";
+    private static final int SET_INTERVAL = 100000;
+    private static final int FASTEST_INTERVAL = 2000; //milliseconds
 
     private String jsonString = "";
-
 
     private static final int MY_PERMISSION_REQUEST_LOCATION = 6969;
     private static final  String TAG = "";
@@ -86,10 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationClient = LocationServices.
                 getFusedLocationProviderClient(this);
 
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.getUiSettings().setZoomControlsEnabled(true);
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney,12));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -108,8 +106,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        locationRequest = new LocationRequest();
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(100000); //100s
-        locationRequest.setFastestInterval(2000); //2s
+        locationRequest.setInterval(SET_INTERVAL);
+        locationRequest.setFastestInterval(FASTEST_INTERVAL);
         locationClient.requestLocationUpdates(locationRequest,
                 new LocationCallback(){
                     @Override

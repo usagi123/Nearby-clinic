@@ -21,10 +21,10 @@ import java.util.ArrayList;
 
 public class ClinicListingView extends AppCompatActivity {
 
-    private String jsonString;
     private static final  String TAG = "";
     private ListView listView;
     public ArrayList<Clinic> clinics;
+    public ArrayList<Clinic> sorted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +33,22 @@ public class ClinicListingView extends AppCompatActivity {
 
         listView = findViewById(R.id.ListView);
         clinics = new ArrayList<Clinic>();
-
+        sorted = new ArrayList<>();
 //        new getClinic().execute();
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        clinics.clear();
+//        clinics.clear();
         listView.invalidateViews();
         new getClinic().execute();
+    }
+
+    public void onSortClickButton(View view) {
+        sort(clinics,"AAA");
+        Log.d(TAG, "onSortedData: " + sorted.toString());
+
     }
 
     private class getClinic extends AsyncTask<Void,Void,Void> {
@@ -72,7 +78,7 @@ public class ClinicListingView extends AppCompatActivity {
                     String lead = jsonObject.getString("lead_physician");
                     String specialization = jsonObject.getString("specialization");
                     int averagePrice = jsonObject.getInt("average_price");
-                    Log.d(TAG, "onPostExecute: " + jsonArray.toString());
+//                    Log.d(TAG, "onPostExecute: " + jsonArray.toString());
 
                     Clinic clinic = new Clinic();
                     clinic.id = id;
@@ -86,19 +92,25 @@ public class ClinicListingView extends AppCompatActivity {
                     clinic.specialization = specialization;
                     clinic.avg_price = averagePrice;
                     clinics.add(clinic);
-                    Log.d(TAG, "onPostExecute: " + clinics.size());
                     CustomListView customListView = new CustomListView(ClinicListingView.this,clinics);
                     customListView.notifyDataSetChanged();
                     listView.setAdapter(customListView);
-                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             ShowUpMenuActivity showUpMenuActivity = new ShowUpMenuActivity(ClinicListingView.this, position);
                             showUpMenuActivity.showPopup(view);
-                            return true;
                         }
-                    });
+//                        @Override
+//                        public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                            ShowUpMenuActivity showUpMenuActivity = new ShowUpMenuActivity(ClinicListingView.this, position);
+//                            showUpMenuActivity.showPopup(view);
+//                            return true;
+//                        }
 
+
+                    });
+                    Log.d(TAG, "onPostExecute: " + clinics.get(0).name);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -138,7 +150,7 @@ public class ClinicListingView extends AppCompatActivity {
                     case R.id.edit:
                         editClinic(clinicID);
                         break;
-                    case R.id.map:
+                    case R.id.view:
                         Intent intent = new Intent(ClinicListingView.this, MapsActivity.class);
 
                         intent.putExtra("viewLat", clinics.get(clinicID).latitude);
@@ -156,15 +168,15 @@ public class ClinicListingView extends AppCompatActivity {
 
     public void editClinic(int id){
         Intent intent = new Intent(this,EditClinicActivity.class);
-        intent.putExtra("sentName",clinics.get(id).name);
-        intent.putExtra("sentId",clinics.get(id).id);
-        intent.putExtra("sentRating",clinics.get(id).rating);
-        intent.putExtra("sentLat",clinics.get(id).latitude);
-        intent.putExtra("sentLon",clinics.get(id).longitude);
-        intent.putExtra("sentImpression",clinics.get(id).impression);
-        intent.putExtra("sentLead",clinics.get(id).lead_phys);
-        intent.putExtra("sentSpecialize",clinics.get(id).specialization);
-        intent.putExtra("sentAvgPrice",clinics.get(id).avg_price);
+        intent.putExtra("editName",clinics.get(id).name);
+        intent.putExtra("editId",clinics.get(id).id);
+        intent.putExtra("editRating",clinics.get(id).rating);
+        intent.putExtra("editLat",clinics.get(id).latitude);
+        intent.putExtra("editLon",clinics.get(id).longitude);
+        intent.putExtra("editImpression",clinics.get(id).impression);
+        intent.putExtra("editLead",clinics.get(id).lead_phys);
+        intent.putExtra("editSpecial",clinics.get(id).specialization);
+        intent.putExtra("editAvg",clinics.get(id).avg_price);
         intent.putExtra("requestType","edit");
         startActivityForResult(intent,1);
     }
@@ -191,5 +203,23 @@ public class ClinicListingView extends AppCompatActivity {
         DeleteClinic deleteClinic = new DeleteClinic();
         deleteClinic.clinicID = clinics.get(id).id;
         deleteClinic.execute();
+    }
+
+    public void sort(ArrayList<Clinic> clinicArrayList,String keyword){
+        sorted = new ArrayList<Clinic>();
+        if (clinics.size() < 0) {
+            //waiting to fetch
+        } else {
+            for (Clinic clinic : clinics) {
+                if (clinic.specialization.matches(keyword) == true) {
+                    sorted.add(clinic);
+                } else {
+                    Toast.makeText(this, "There is no suitable keyword", Toast.LENGTH_SHORT).show();
+                }
+            }
+            CustomListView customListView = new CustomListView(ClinicListingView.this,sorted);
+            customListView.notifyDataSetChanged();
+            listView.setAdapter(customListView);
+        }
     }
 }
