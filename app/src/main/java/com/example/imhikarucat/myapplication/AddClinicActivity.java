@@ -16,7 +16,6 @@ import java.util.Locale;
 
 public class AddClinicActivity extends AppCompatActivity {
 
-    private static final String TAG = "";
     private Geocoder geocoder;
     private Clinic clinic;
     private List<Address> addresses;

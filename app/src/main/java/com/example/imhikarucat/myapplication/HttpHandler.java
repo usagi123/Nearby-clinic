@@ -122,10 +122,9 @@ public class HttpHandler {
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection)
                     url.openConnection();
-            //Step 2: define the request
             conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type","application/json");
-            //step 3: prepare the post data
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("name", clinic.name);
             jsonObject.put("rating", clinic.rating);
@@ -135,7 +134,7 @@ public class HttpHandler {
             jsonObject.put("lead_physician", clinic.lead_phys);
             jsonObject.put("specialization",clinic.specialization);
             jsonObject.put("average_price",clinic.avg_price);
-            //step 4: send json to the webservice
+
             DataOutputStream os = new DataOutputStream(conn.getOutputStream());
             os.writeBytes(jsonObject.toString());
             os.flush();
@@ -160,7 +159,6 @@ public class HttpHandler {
             Log.d(TAG, "DeleteClinicRequest: " + urlStr);
             HttpURLConnection conn = (HttpURLConnection)
                     url.openConnection();
-            //Step 2: define the request
             conn.setRequestMethod("DELETE");
             conn.setRequestProperty("Content-Type","application/json");
             status = conn.getResponseCode() + ": " + conn.getResponseMessage();

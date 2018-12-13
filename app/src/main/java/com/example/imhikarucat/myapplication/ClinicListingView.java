@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -23,8 +24,9 @@ public class ClinicListingView extends AppCompatActivity {
 
     private static final  String TAG = "";
     private ListView listView;
-    public ArrayList<Clinic> clinics;
-    public ArrayList<Clinic> sorted;
+    private ArrayList<Clinic> clinics;
+    private ArrayList<Clinic> sorting;
+    EditText searchbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +35,21 @@ public class ClinicListingView extends AppCompatActivity {
 
         listView = findViewById(R.id.ListView);
         clinics = new ArrayList<Clinic>();
-        sorted = new ArrayList<>();
-//        new getClinic().execute();
+        sorting = new ArrayList<>();
+        searchbar = findViewById(R.id.searchSpecialization);
+
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-//        clinics.clear();
         listView.invalidateViews();
         new getClinic().execute();
     }
 
     public void onSortClickButton(View view) {
-        sort(clinics,"AAA");
-        Log.d(TAG, "onSortedData: " + sorted.toString());
-
+        String result = searchbar.getText().toString();
+        sort(clinics, result);
     }
 
     private class getClinic extends AsyncTask<Void,Void,Void> {
@@ -78,7 +79,6 @@ public class ClinicListingView extends AppCompatActivity {
                     String lead = jsonObject.getString("lead_physician");
                     String specialization = jsonObject.getString("specialization");
                     int averagePrice = jsonObject.getInt("average_price");
-//                    Log.d(TAG, "onPostExecute: " + jsonArray.toString());
 
                     Clinic clinic = new Clinic();
                     clinic.id = id;
@@ -121,13 +121,10 @@ public class ClinicListingView extends AppCompatActivity {
 
             private Activity context;
             private Integer clinicID;
-            private Double lat, lon;
 
             ShowUpMenuActivity(Activity context, Integer clinicID) {
                 this.context = context;
                 this.clinicID = clinicID;
-                this.lat = lat;
-                this.lon = lon;
             }
 
             void showPopup(View v){
@@ -184,7 +181,6 @@ public class ClinicListingView extends AppCompatActivity {
     private class DeleteClinic extends AsyncTask<Void,Void,Void> {
         String jsonString = "";
         String clinicID = "";
-        Double viewLat, viewLong;
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -206,20 +202,20 @@ public class ClinicListingView extends AppCompatActivity {
     }
 
     public void sort(ArrayList<Clinic> clinicArrayList,String keyword){
-        sorted = new ArrayList<Clinic>();
+        sorting = new ArrayList<Clinic>();
         if (clinics.size() < 0) {
-            //waiting to fetch
+            Toast.makeText(this, "Please wait for me to fetch the clinics listing details", Toast.LENGTH_SHORT).show();
         } else {
             for (Clinic clinic : clinics) {
                 if (clinic.specialization.matches(keyword) == true) {
-                    sorted.add(clinic);
+                    sorting.add(clinic);
                 } else if (clinic.specialization.matches(keyword) != true) {
-                    Toast.makeText(this, "Searching complete. There are " + sorted.size() + " clinics that suit the keyword", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Searching complete. There are " + sorting.size() + " clinics that suit the keyword", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "There is no suitable keyword", Toast.LENGTH_SHORT).show();
                 }
             }
-            CustomListView customListView = new CustomListView(ClinicListingView.this,sorted);
+            CustomListView customListView = new CustomListView(ClinicListingView.this,sorting);
             customListView.notifyDataSetChanged();
             listView.setAdapter(customListView);
         }
