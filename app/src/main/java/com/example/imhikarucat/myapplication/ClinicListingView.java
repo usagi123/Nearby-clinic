@@ -98,12 +98,12 @@ public class ClinicListingView extends AppCompatActivity {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            ShowUpMenuActivity showUpMenuActivity = new ShowUpMenuActivity(ClinicListingView.this, position);
+                            showUpMenuActivity showUpMenuActivity = new showUpMenuActivity(ClinicListingView.this, position);
                             showUpMenuActivity.showPopup(view);
                         }
 //                        @Override
 //                        public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            ShowUpMenuActivity showUpMenuActivity = new ShowUpMenuActivity(ClinicListingView.this, position);
+//                            showUpMenuActivity showUpMenuActivity = new showUpMenuActivity(ClinicListingView.this, position);
 //                            showUpMenuActivity.showPopup(view);
 //                            return true;
 //                        }
@@ -117,12 +117,12 @@ public class ClinicListingView extends AppCompatActivity {
             }
         }
 
-        public class ShowUpMenuActivity implements PopupMenu.OnMenuItemClickListener {
+        public class showUpMenuActivity implements PopupMenu.OnMenuItemClickListener {
 
             private Activity context;
             private Integer clinicID;
 
-            ShowUpMenuActivity(Activity context, Integer clinicID) {
+            showUpMenuActivity(Activity context, Integer clinicID) {
                 this.context = context;
                 this.clinicID = clinicID;
             }
@@ -153,7 +153,7 @@ public class ClinicListingView extends AppCompatActivity {
                         intent.putExtra("viewLat", clinics.get(clinicID).latitude);
                         intent.putExtra("viewLon", clinics.get(clinicID).longitude);
                         startActivity(intent);
-                        Toast.makeText(context,"Map",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"View clinic",Toast.LENGTH_LONG).show();
                         //send lat long data back to MapsActivity
                         //create a func in MapsActivity to move camera to designated location
                         break;
@@ -178,7 +178,7 @@ public class ClinicListingView extends AppCompatActivity {
         startActivityForResult(intent,1);
     }
 
-    private class DeleteClinic extends AsyncTask<Void,Void,Void> {
+    private class deleteClinic extends AsyncTask<Void,Void,Void> {
         String jsonString = "";
         String clinicID = "";
 
@@ -196,7 +196,7 @@ public class ClinicListingView extends AppCompatActivity {
     }
 
     public void deleteClinic (int id) {
-        DeleteClinic deleteClinic = new DeleteClinic();
+        deleteClinic deleteClinic = new deleteClinic();
         deleteClinic.clinicID = clinics.get(id).id;
         deleteClinic.execute();
     }

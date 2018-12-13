@@ -79,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -88,6 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getFusedLocationProviderClient(this);
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -134,7 +136,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 }
                 ,null);
-
     }
 
     @SuppressLint({"MissingPermission", "RestrictedApi"})
@@ -172,16 +173,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onResume(){
         super.onResume();
+
         if (mMap != null){
             mMap.clear();
-            Double lat, lon;
+            Double viewLat, viewLon, newAddLat, newAddLon;
             Intent intent = getIntent();
-            lat = intent.getDoubleExtra("viewLat",0);
-            lon = intent.getDoubleExtra("viewLon",0);
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 16.0f));
+            viewLat = intent.getDoubleExtra("viewLat",0);
+            viewLon = intent.getDoubleExtra("viewLon",0);
+            newAddLat = intent.getDoubleExtra("newAddLat", 0);
+            newAddLon = intent.getDoubleExtra("newAddLon", 0);
+
+            if (viewLat != null && viewLon != null) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(viewLat, viewLon), 16.0f));
+            } else if (newAddLat != null && newAddLon != null) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newAddLat, newAddLon), 16.0f));
+            }
         }
         new getClinic().execute();
     }
@@ -209,7 +219,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     );
                     mMap.addMarker(new MarkerOptions().position(position)
                             .icon(BitmapDescriptorFactory.fromResource(
-                                    R.drawable.ic_clinic
+                                    R.drawable.hospital_resize
                             ))
                             .title("Clinic")
                             .snippet(jsonObject.getString("name")));
