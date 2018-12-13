@@ -42,8 +42,9 @@
         </activity>
         <activity android:name=".AddRestaurantActivity" />
         <activity android:name=".AddClinicActivity" />
-        <activity android:name=".ClinicListingView" />
-        <activity android:name=".EditClinicActivity"></activity>
+        <activity android:name=".ClinicListingView" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".EditClinicActivity" />
+        <activity android:name=".SearchViewAcitivity"/>
     </application>
 
 </manifest>

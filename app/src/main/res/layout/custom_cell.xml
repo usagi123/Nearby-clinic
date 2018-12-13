@@ -8,7 +8,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:layout_marginBottom="5dp">
 
         <TableLayout
@@ -21,7 +20,7 @@
 
                 <TextView
                     android:id="@+id/textView"
-                    android:layout_width="109dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:text="Name" />
 

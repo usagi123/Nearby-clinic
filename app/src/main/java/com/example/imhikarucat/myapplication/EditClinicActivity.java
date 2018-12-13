@@ -14,10 +14,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-//Not working
 public class EditClinicActivity extends AppCompatActivity {
 
-    private static final String TAG = "";
     private Geocoder geocoder;
     private Clinic clinic;
     private List<Address> addresses;
@@ -106,7 +104,7 @@ public class EditClinicActivity extends AppCompatActivity {
             intent.putExtra("editLead",clinic.lead_phys);
             intent.putExtra("editSpecial",clinic.specialization);
             intent.putExtra("editAvgPrice",clinic.avg_price);
-            setResult(RESULT_OK,intent);
+            setResult(101,intent);
             finish();
         }
     }
