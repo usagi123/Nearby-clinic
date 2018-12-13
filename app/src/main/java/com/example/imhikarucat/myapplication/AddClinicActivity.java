@@ -62,6 +62,11 @@ public class AddClinicActivity extends AppCompatActivity {
         clinic.lead_phys = editLead.getText().toString();
         clinic.specialization = editSpecialization.getText().toString();
         new PostClinic().execute();
+
+        Intent intent = new Intent(AddClinicActivity.this, MapsActivity.class);
+        intent.putExtra("newAddLat", clinic.latitude);
+        intent.putExtra("newAddLon", clinic.longitude);
+        startActivity(intent);
     }
 
 

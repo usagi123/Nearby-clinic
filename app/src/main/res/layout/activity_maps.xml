@@ -12,26 +12,27 @@
         android:name="com.google.android.gms.maps.SupportMapFragment">
     </fragment>
 
-    <Button
-        android:id="@+id/button2"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/where_am_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
+        android:clickable="true"
         android:onClick="onGetPositionClick"
-        android:text="Where am I" />
+        android:src="@drawable/ic_where_am_i" />
 
-    <Button
-        android:id="@+id/button3"
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="130dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_toEndOf="@+id/where_am_id"
+        android:clickable="true"
         android:onClick="onViewAll"
-        android:text="Listing" />
+        android:src="@drawable/ic_listing" />
 
 </RelativeLayout>
