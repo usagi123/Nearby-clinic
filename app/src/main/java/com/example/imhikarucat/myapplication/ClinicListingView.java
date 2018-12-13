@@ -213,6 +213,8 @@ public class ClinicListingView extends AppCompatActivity {
             for (Clinic clinic : clinics) {
                 if (clinic.specialization.matches(keyword) == true) {
                     sorted.add(clinic);
+                } else if (clinic.specialization.matches(keyword) != true) {
+                    Toast.makeText(this, "Searching complete. There are " + sorted.size() + " clinics that suit the keyword", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "There is no suitable keyword", Toast.LENGTH_SHORT).show();
                 }
