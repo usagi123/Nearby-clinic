@@ -3,6 +3,7 @@ package com.example.imhikarucat.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,12 +28,16 @@ public class ClinicListingView extends AppCompatActivity {
     private ArrayList<Clinic> clinics;
     private ArrayList<Clinic> sorting;
     EditText searchbar;
+    String filterKey;
+    String returnedFiltered;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clinic_listing_view);
-
+        filterKey = "";
+        returnedFiltered = "";
         listView = findViewById(R.id.ListView);
         clinics = new ArrayList<Clinic>();
         sorting = new ArrayList<>();
@@ -43,14 +48,29 @@ public class ClinicListingView extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        clinics.clear();
-        listView.invalidateViews();
-        new getClinic().execute();
+//        clinics.clear();
+//        listView.invalidateViews();
+//        new getClinic().execute();
+//        Log.d(TAG, "onResume: " + returnedFiltered);
+//        if(filterKey.equals("filting")){
+//            sort(clinics,returnedFiltered);
+//            listView.invalidateViews();
+//        }
+
+        if(filterKey.equals( "filting")){
+            sort(clinics,returnedFiltered);
+        }else{
+            clinics.clear();
+            listView.invalidateViews();
+            new getClinic().execute();
+        }
     }
 
     public void onSortClickButton(View view) {
-        String result = searchbar.getText().toString();
-        sort(clinics, result);
+//        String result = searchbar.getText().toString();
+//        sort(clinics, result);
+        Intent intent = new Intent(ClinicListingView.this, SortActivity.class);
+        startActivityForResult(intent,1);
     }
 
     private class getClinic extends AsyncTask<Void,Void,Void> {
@@ -219,6 +239,19 @@ public class ClinicListingView extends AppCompatActivity {
             CustomListView customListView = new CustomListView(ClinicListingView.this,sorting);
             customListView.notifyDataSetChanged();
             listView.setAdapter(customListView);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 101){
+            if(requestCode == 1){
+                filterKey = data.getStringExtra("intentKey");
+                Log.d(TAG, "onActivityResult: "  + filterKey);
+                returnedFiltered = data.getStringExtra("filterKey");
+//                sort(clinics,returnedFiltered);
+            }
         }
     }
 }
