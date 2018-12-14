@@ -30,6 +30,19 @@ public class CustomListView extends ArrayAdapter<Clinic> {
         this.clinics = clinics;
     }
 
+    class ViewHolder{
+        TextView name, address, rating, impression, lead, specialization, average_price;
+        ViewHolder(View v){
+            name = v.findViewById(R.id.name);
+            address = v.findViewById(R.id.address);
+            rating = v.findViewById(R.id.rating);
+            impression = v.findViewById(R.id.impression);
+            lead = v.findViewById(R.id.lead);
+            specialization = v.findViewById(R.id.special);
+            average_price = v.findViewById(R.id.price);
+        }
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -67,18 +80,5 @@ public class CustomListView extends ArrayAdapter<Clinic> {
 
         }
         return r;
-    }
-
-    class ViewHolder{
-        TextView name, address, rating, impression, lead, specialization, average_price;
-        ViewHolder(View v){
-            name = v.findViewById(R.id.name);
-            address = v.findViewById(R.id.address);
-            rating = v.findViewById(R.id.rating);
-            impression = v.findViewById(R.id.impression);
-            lead = v.findViewById(R.id.lead);
-            specialization = v.findViewById(R.id.special);
-            average_price = v.findViewById(R.id.price);
-        }
     }
 }

@@ -211,7 +211,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected Void doInBackground(Void... voids) {
             jsonString = HttpHandler.getRequest(STUDENT_API);
-            Log.d(TAG, "doInBackground: " + jsonString);
             return null;
         }
 
