@@ -202,7 +202,7 @@ public class ClinicListingView extends AppCompatActivity {
         deleteClinic.execute();
     }
 
-    public void sort(ArrayList<Clinic> clinicArrayList,String keyword){
+    public void sort(ArrayList<Clinic> clinicArrayList, String keyword){
         sorting = new ArrayList<Clinic>();
         if (clinics.size() < 0) {
             Toast.makeText(this, "Please wait for me to fetch the clinics listing details", Toast.LENGTH_SHORT).show();
