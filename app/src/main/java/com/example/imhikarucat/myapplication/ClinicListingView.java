@@ -41,7 +41,7 @@ public class ClinicListingView extends AppCompatActivity {
         listView = findViewById(R.id.ListView);
         clinics = new ArrayList<Clinic>();
         sorting = new ArrayList<>();
-        searchbar = findViewById(R.id.searchSpecialization);
+//        searchbar = findViewById(R.id.searchSpecialization);
 
     }
 
@@ -232,6 +232,8 @@ public class ClinicListingView extends AppCompatActivity {
                     sorting.add(clinic);
                 } else if (clinic.specialization.matches(keyword) != true) {
                     Toast.makeText(this, "Searching complete. There are " + sorting.size() + " clinics that suit the keyword", Toast.LENGTH_SHORT).show();
+                } else if (sorting.size() < 0) {
+                    Toast.makeText(this, "Please wait for me to fetch the clinics listing details", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "There is no suitable keyword", Toast.LENGTH_SHORT).show();
                 }
