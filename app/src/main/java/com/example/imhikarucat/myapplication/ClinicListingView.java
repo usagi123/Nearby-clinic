@@ -43,6 +43,7 @@ public class ClinicListingView extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        clinics.clear();
         listView.invalidateViews();
         new getClinic().execute();
     }
@@ -149,7 +150,7 @@ public class ClinicListingView extends AppCompatActivity {
                         break;
                     case R.id.view:
                         Intent intent = new Intent(ClinicListingView.this, MapsActivity.class);
-
+                        intent.putExtra("intentType", "viewMap");
                         intent.putExtra("viewLat", clinics.get(clinicID).latitude);
                         intent.putExtra("viewLon", clinics.get(clinicID).longitude);
                         startActivity(intent);
