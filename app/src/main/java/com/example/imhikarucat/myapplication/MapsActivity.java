@@ -180,17 +180,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (mMap != null){
             mMap.clear();
-            Double viewLat, viewLon, newAddLat, newAddLon;
+
+            String intentType;
+            Double viewLat, viewLon, newAddLat, newAddLon, newEditLat, newEditLon;
             Intent intent = getIntent();
+
+            intentType = intent.getStringExtra("intentType");
             viewLat = intent.getDoubleExtra("viewLat",0);
             viewLon = intent.getDoubleExtra("viewLon",0);
             newAddLat = intent.getDoubleExtra("newAddLat", 0);
             newAddLon = intent.getDoubleExtra("newAddLon", 0);
+            newEditLat = intent.getDoubleExtra("newEditLat", 0);
+            newEditLon = intent.getDoubleExtra("newEditLon", 0);
 
-            if (viewLat != null && viewLon != null) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(viewLat, viewLon), 16.0f));
-            } else if (newAddLat != null && newAddLon != null) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newAddLat, newAddLon), 16.0f));
+            if (intentType != null) {
+                if (intentType.equals("viewMap")) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(viewLat, viewLon), 16.0f));
+                } else if (intentType.equals("newAdd") ) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newAddLat, newAddLon), 16.0f));
+                } else if (intentType.equals("newEdit")) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newEditLat, newEditLon), 16.0f));
+                }
             }
         }
         new getClinic().execute();

@@ -90,7 +90,7 @@ public class HttpHandler {
             //Prepare json object
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("name", clinic.name);
-            jsonObject.put("address", clinic.address);
+//            jsonObject.put("address", clinic.address);
             jsonObject.put("rating", clinic.rating);
             jsonObject.put("latitute", clinic.latitude);
             jsonObject.put("longitute", clinic.longitude);

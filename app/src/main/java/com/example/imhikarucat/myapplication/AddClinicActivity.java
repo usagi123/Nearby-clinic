@@ -55,7 +55,7 @@ public class AddClinicActivity extends AppCompatActivity {
 
     public void onConfirmAddClinic(View view) {
         clinic.name = editName.getText().toString();
-        clinic.address = address;
+//        clinic.address = address;
         clinic.rating = Integer.parseInt(editRating.getText().toString());
         clinic.impression = editImpression.getText().toString();
         clinic.avg_price = Integer.parseInt(editAveragePrice.getText().toString());
@@ -64,6 +64,7 @@ public class AddClinicActivity extends AppCompatActivity {
         new PostClinic().execute();
 
         Intent intent = new Intent(AddClinicActivity.this, MapsActivity.class);
+        intent.putExtra("intentType", "newAdd");
         intent.putExtra("newAddLat", clinic.latitude);
         intent.putExtra("newAddLon", clinic.longitude);
         startActivity(intent);

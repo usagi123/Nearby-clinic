@@ -95,15 +95,20 @@ public class EditClinicActivity extends AppCompatActivity {
             Toast.makeText(EditClinicActivity.this, status, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(EditClinicActivity.this,
                     MapsActivity.class);
-            intent.putExtra("edit_Id",clinic.id);
-            intent.putExtra("editName",clinic.name);
-            intent.putExtra("editRating",clinic.rating);
-            intent.putExtra("editLat",clinic.latitude);
-            intent.putExtra("editLon",clinic.longitude);
-            intent.putExtra("editImpression",clinic.impression);
-            intent.putExtra("editLead",clinic.lead_phys);
-            intent.putExtra("editSpecial",clinic.specialization);
-            intent.putExtra("editAvgPrice",clinic.avg_price);
+
+            intent.putExtra("intentType", "newEdit");
+            intent.putExtra("newEditLat", clinic.latitude);
+            intent.putExtra("newEditLon", clinic.longitude);
+            startActivity(intent);
+//            intent.putExtra("edit_Id",clinic.id);
+//            intent.putExtra("editName",clinic.name);
+//            intent.putExtra("editRating",clinic.rating);
+//            intent.putExtra("editLat",clinic.latitude);
+//            intent.putExtra("editLon",clinic.longitude);
+//            intent.putExtra("editImpression",clinic.impression);
+//            intent.putExtra("editLead",clinic.lead_phys);
+//            intent.putExtra("editSpecial",clinic.specialization);
+//            intent.putExtra("editAvgPrice",clinic.avg_price);
             setResult(101,intent);
             finish();
         }
