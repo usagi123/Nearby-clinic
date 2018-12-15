@@ -72,20 +72,26 @@ public class EditClinicActivity extends AppCompatActivity {
     }
 
     public void onConfirmEditClinic(View view) {
-        clinic.name = editName.getText().toString();
-        clinic.rating = Integer.parseInt(editRating.getText().toString());
-        clinic.impression = editImpression.getText().toString();
-        clinic.avg_price = Integer.parseInt(editAveragePrice.getText().toString());
-        clinic.lead_phys = editLead.getText().toString();
-        clinic.specialization = editSpecialization.getText().toString();
-        new PutClinic().execute();
+        if (editName.getText().toString().equals("") || editRating.getText().toString().equals("") || editImpression.getText().toString().equals("")
+                || editLead.getText().toString().equals("") || editSpecialization.getText().toString().equals("") || editAveragePrice.getText().toString().equals("")) {
+            Toast.makeText(EditClinicActivity.this, "There is empty field", Toast.LENGTH_SHORT).show();
+        } else {
+            clinic.name = editName.getText().toString();
+            clinic.rating = Integer.parseInt(editRating.getText().toString());
+            clinic.impression = editImpression.getText().toString();
+            clinic.avg_price = Integer.parseInt(editAveragePrice.getText().toString());
+            clinic.lead_phys = editLead.getText().toString();
+            clinic.specialization = editSpecialization.getText().toString();
+            new PutClinic().execute();
+        }
+
     }
 
     private class PutClinic extends AsyncTask<Void,Void,Void> {
         private String status = "";
         @Override
         protected Void doInBackground(Void... voids) {
-            status = HttpHandler.editRequest(MapsActivity.STUDENT_API + "/" + clinic.id, clinic);
+            status = HttpHandler.editRequest(MapsActivity.CLINICS_API + "/" + clinic.id, clinic);
             return null;
         }
 
@@ -100,15 +106,6 @@ public class EditClinicActivity extends AppCompatActivity {
             intent.putExtra("newEditLat", clinic.latitude);
             intent.putExtra("newEditLon", clinic.longitude);
             startActivity(intent);
-//            intent.putExtra("edit_Id",clinic.id);
-//            intent.putExtra("editName",clinic.name);
-//            intent.putExtra("editRating",clinic.rating);
-//            intent.putExtra("editLat",clinic.latitude);
-//            intent.putExtra("editLon",clinic.longitude);
-//            intent.putExtra("editImpression",clinic.impression);
-//            intent.putExtra("editLead",clinic.lead_phys);
-//            intent.putExtra("editSpecial",clinic.specialization);
-//            intent.putExtra("editAvgPrice",clinic.avg_price);
             setResult(101,intent);
             finish();
         }

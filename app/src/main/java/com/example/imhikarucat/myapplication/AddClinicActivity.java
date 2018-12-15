@@ -54,20 +54,25 @@ public class AddClinicActivity extends AppCompatActivity {
     }
 
     public void onConfirmAddClinic(View view) {
-        clinic.name = editName.getText().toString();
+        if (editName.getText().toString().equals("") || editRating.getText().toString().equals("") || editImpression.getText().toString().equals("")
+                || editLead.getText().toString().equals("") || editSpecialization.getText().toString().equals("") || editAveragePrice.getText().toString().equals("")) {
+            Toast.makeText(AddClinicActivity.this, "There is empty field", Toast.LENGTH_SHORT).show();
+        } else {
+            clinic.name = editName.getText().toString();
 //        clinic.address = address;
-        clinic.rating = Integer.parseInt(editRating.getText().toString());
-        clinic.impression = editImpression.getText().toString();
-        clinic.avg_price = Integer.parseInt(editAveragePrice.getText().toString());
-        clinic.lead_phys = editLead.getText().toString();
-        clinic.specialization = editSpecialization.getText().toString();
-        new PostClinic().execute();
+            clinic.rating = Integer.parseInt(editRating.getText().toString());
+            clinic.impression = editImpression.getText().toString();
+            clinic.avg_price = Integer.parseInt(editAveragePrice.getText().toString());
+            clinic.lead_phys = editLead.getText().toString();
+            clinic.specialization = editSpecialization.getText().toString();
+            new PostClinic().execute();
 
-        Intent intent = new Intent(AddClinicActivity.this, MapsActivity.class);
-        intent.putExtra("intentType", "newAdd");
-        intent.putExtra("newAddLat", clinic.latitude);
-        intent.putExtra("newAddLon", clinic.longitude);
-        startActivity(intent);
+            Intent intent = new Intent(AddClinicActivity.this, MapsActivity.class);
+            intent.putExtra("intentType", "newAdd");
+            intent.putExtra("newAddLat", clinic.latitude);
+            intent.putExtra("newAddLon", clinic.longitude);
+            startActivity(intent);
+        }
     }
 
 
@@ -75,7 +80,7 @@ public class AddClinicActivity extends AppCompatActivity {
         private String status = "";
         @Override
         protected Void doInBackground(Void... voids) {
-            status = HttpHandler.postClinic(MapsActivity.STUDENT_API,clinic);
+            status = HttpHandler.postClinic(MapsActivity.CLINICS_API,clinic);
             return null;
         }
 

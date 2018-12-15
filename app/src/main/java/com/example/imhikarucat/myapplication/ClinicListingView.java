@@ -3,6 +3,7 @@ package com.example.imhikarucat.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,37 +28,47 @@ public class ClinicListingView extends AppCompatActivity {
     private ArrayList<Clinic> clinics;
     private ArrayList<Clinic> sorting;
     EditText searchbar;
+    String filterKey;
+    String returnedFiltered;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clinic_listing_view);
-
+        filterKey = "";
+        returnedFiltered = "";
         listView = findViewById(R.id.ListView);
         clinics = new ArrayList<Clinic>();
         sorting = new ArrayList<>();
-        searchbar = findViewById(R.id.searchSpecialization);
+//        searchbar = findViewById(R.id.searchSpecialization);
 
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        clinics.clear();
-        listView.invalidateViews();
-        new getClinic().execute();
+        if(filterKey.equals( "filting")) {
+            sort(clinics,returnedFiltered);
+        } else {
+            clinics.clear();
+            listView.invalidateViews();
+            new getClinic().execute();
+        }
     }
 
     public void onSortClickButton(View view) {
-        String result = searchbar.getText().toString();
-        sort(clinics, result);
+//        String result = searchbar.getText().toString();
+//        sort(clinics, result);
+        Intent intent = new Intent(ClinicListingView.this, SortActivity.class);
+        startActivityForResult(intent,1);
     }
 
     private class getClinic extends AsyncTask<Void,Void,Void> {
         String jsonString="";
         @Override
         protected Void doInBackground(Void... voids) {
-            jsonString = HttpHandler.getRequest(MapsActivity.STUDENT_API);
+            jsonString = HttpHandler.getRequest(MapsActivity.CLINICS_API);
             Log.d(TAG, "doInBackground: " + jsonString);
             return null;
         }
@@ -164,7 +175,7 @@ public class ClinicListingView extends AppCompatActivity {
         }
     }
 
-    public void editClinic(int id){
+    public void editClinic(int id) {
         Intent intent = new Intent(this,EditClinicActivity.class);
         intent.putExtra("editName",clinics.get(id).name);
         intent.putExtra("editId",clinics.get(id).id);
@@ -185,7 +196,7 @@ public class ClinicListingView extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            jsonString = HttpHandler.deleteRequest(MapsActivity.STUDENT_API + "/" + clinicID);
+            jsonString = HttpHandler.deleteRequest(MapsActivity.CLINICS_API + "/" + clinicID);
             return null;
         }
 
@@ -202,7 +213,7 @@ public class ClinicListingView extends AppCompatActivity {
         deleteClinic.execute();
     }
 
-    public void sort(ArrayList<Clinic> clinicArrayList,String keyword){
+    public void sort(ArrayList<Clinic> clinicArrayList, String keyword) {
         sorting = new ArrayList<Clinic>();
         if (clinics.size() < 0) {
             Toast.makeText(this, "Please wait for me to fetch the clinics listing details", Toast.LENGTH_SHORT).show();
@@ -212,6 +223,8 @@ public class ClinicListingView extends AppCompatActivity {
                     sorting.add(clinic);
                 } else if (clinic.specialization.matches(keyword) != true) {
                     Toast.makeText(this, "Searching complete. There are " + sorting.size() + " clinics that suit the keyword", Toast.LENGTH_SHORT).show();
+                } else if (sorting.size() < 0) {
+                    Toast.makeText(this, "Please wait for me to fetch the clinics listing details", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "There is no suitable keyword", Toast.LENGTH_SHORT).show();
                 }
@@ -219,6 +232,19 @@ public class ClinicListingView extends AppCompatActivity {
             CustomListView customListView = new CustomListView(ClinicListingView.this,sorting);
             customListView.notifyDataSetChanged();
             listView.setAdapter(customListView);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 101){
+            if(requestCode == 1){
+                filterKey = data.getStringExtra("intentKey");
+                Log.d(TAG, "onActivityResult: "  + filterKey);
+                returnedFiltered = data.getStringExtra("filterKey");
+//                sort(clinics,returnedFiltered);
+            }
         }
     }
 }

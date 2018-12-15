@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,30 +25,43 @@ public class CustomListView extends ArrayAdapter<Clinic> {
     public List<Address> addresses;
     public String resultAddress;
 
-    public CustomListView(@NonNull Activity context, ArrayList<Clinic>clinics){
+    public CustomListView(@NonNull Activity context, ArrayList<Clinic>clinics) {
         super(context, R.layout.custom_cell,clinics);
         this.context = context;
         this.clinics = clinics;
     }
 
+    class ViewHolder {
+        TextView name, address, rating, impression, lead, specialization, average_price;
+        ViewHolder(View v){
+            name = v.findViewById(R.id.name);
+            address = v.findViewById(R.id.address);
+            rating = v.findViewById(R.id.rating);
+            impression = v.findViewById(R.id.impression);
+            lead = v.findViewById(R.id.lead);
+            specialization = v.findViewById(R.id.special);
+            average_price = v.findViewById(R.id.price);
+        }
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View r = convertView;
+        View convertedView = convertView;
         ViewHolder viewHolder = null;
 
         geocoder = new Geocoder(context,Locale.getDefault());
 
-        if(r == null){
+        if(convertedView == null){
             LayoutInflater layoutInflater = context.getLayoutInflater();
-            r = layoutInflater.inflate(R.layout.custom_cell,null,true);
-            viewHolder = new ViewHolder(r);
-            r.setTag(viewHolder);
+            convertedView = layoutInflater.inflate(R.layout.custom_cell,null,true);
+            viewHolder = new ViewHolder(convertedView);
+            convertedView.setTag(viewHolder);
         }
-        else{
-            viewHolder = (ViewHolder) r.getTag();
+        else {
+            viewHolder = (ViewHolder) convertedView.getTag();
         }
-        try{
+        try {
             viewHolder.name.setText(clinics.get(position).getName());
 
             try {
@@ -64,21 +78,8 @@ public class CustomListView extends ArrayAdapter<Clinic> {
             viewHolder.specialization.setText(clinics.get(position).getSpecialization());
             viewHolder.average_price.setText(Integer.toString(clinics.get(position).getAvg_price()));
         }catch (Exception e){
-
+            Toast.makeText(context, "Something went wrong when create custom cell", Toast.LENGTH_SHORT).show();
         }
-        return r;
-    }
-
-    class ViewHolder{
-        TextView name, address, rating, impression, lead, specialization, average_price;
-        ViewHolder(View v){
-            name = v.findViewById(R.id.name);
-            address = v.findViewById(R.id.address);
-            rating = v.findViewById(R.id.rating);
-            impression = v.findViewById(R.id.impression);
-            lead = v.findViewById(R.id.lead);
-            specialization = v.findViewById(R.id.special);
-            average_price = v.findViewById(R.id.price);
-        }
+        return convertedView;
     }
 }
