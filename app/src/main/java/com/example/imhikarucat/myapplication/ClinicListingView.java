@@ -139,7 +139,7 @@ public class ClinicListingView extends AppCompatActivity {
                         clinics.clear();
                         listView.invalidateViews();
                         new getClinic().execute();
-                        Toast.makeText(context,"item has been deleted",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"Clinic has been deleted",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.edit:
                         editClinic(clinicID);

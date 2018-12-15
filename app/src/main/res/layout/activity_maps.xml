@@ -27,10 +27,10 @@
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/where_am_id"
+        android:layout_alignParentStart="true"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_toEndOf="@+id/where_am_id"
         android:clickable="true"
         android:onClick="onViewAll"
         android:src="@drawable/ic_listing" />
