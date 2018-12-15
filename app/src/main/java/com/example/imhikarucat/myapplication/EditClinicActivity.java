@@ -75,6 +75,8 @@ public class EditClinicActivity extends AppCompatActivity {
         if (editName.getText().toString().equals("") || editRating.getText().toString().equals("") || editImpression.getText().toString().equals("")
                 || editLead.getText().toString().equals("") || editSpecialization.getText().toString().equals("") || editAveragePrice.getText().toString().equals("")) {
             Toast.makeText(EditClinicActivity.this, "There is empty field", Toast.LENGTH_SHORT).show();
+        } else if (Integer.parseInt(editRating.getText().toString()) > 10 || Integer.parseInt(editRating.getText().toString()) < 1) {
+            Toast.makeText(EditClinicActivity.this, "Invalid rating input", Toast.LENGTH_SHORT).show();
         } else {
             clinic.name = editName.getText().toString();
             clinic.rating = Integer.parseInt(editRating.getText().toString());
