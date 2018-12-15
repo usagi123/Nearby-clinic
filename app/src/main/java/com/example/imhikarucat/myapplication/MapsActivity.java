@@ -3,21 +3,12 @@ package com.example.imhikarucat.myapplication;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -31,7 +22,6 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,7 +34,7 @@ import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    public static final String STUDENT_API = "https://clinicandroidasn2.herokuapp.com/clinics";
+    public static final String CLINICS_API = "https://clinicandroidasn2.herokuapp.com/clinics";
     private static final int SET_INTERVAL = 1000000;
     private static final int FASTEST_INTERVAL = 2000; //milliseconds
 
@@ -210,7 +200,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String jsonString="";
         @Override
         protected Void doInBackground(Void... voids) {
-            jsonString = HttpHandler.getRequest(STUDENT_API);
+            jsonString = HttpHandler.getRequest(CLINICS_API);
             return null;
         }
 

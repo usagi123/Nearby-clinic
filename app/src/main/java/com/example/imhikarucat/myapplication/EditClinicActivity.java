@@ -91,7 +91,7 @@ public class EditClinicActivity extends AppCompatActivity {
         private String status = "";
         @Override
         protected Void doInBackground(Void... voids) {
-            status = HttpHandler.editRequest(MapsActivity.STUDENT_API + "/" + clinic.id, clinic);
+            status = HttpHandler.editRequest(MapsActivity.CLINICS_API + "/" + clinic.id, clinic);
             return null;
         }
 

@@ -48,18 +48,9 @@ public class ClinicListingView extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-//        clinics.clear();
-//        listView.invalidateViews();
-//        new getClinic().execute();
-//        Log.d(TAG, "onResume: " + returnedFiltered);
-//        if(filterKey.equals("filting")){
-//            sort(clinics,returnedFiltered);
-//            listView.invalidateViews();
-//        }
-
-        if(filterKey.equals( "filting")){
+        if(filterKey.equals( "filting")) {
             sort(clinics,returnedFiltered);
-        }else{
+        } else {
             clinics.clear();
             listView.invalidateViews();
             new getClinic().execute();
@@ -77,7 +68,7 @@ public class ClinicListingView extends AppCompatActivity {
         String jsonString="";
         @Override
         protected Void doInBackground(Void... voids) {
-            jsonString = HttpHandler.getRequest(MapsActivity.STUDENT_API);
+            jsonString = HttpHandler.getRequest(MapsActivity.CLINICS_API);
             Log.d(TAG, "doInBackground: " + jsonString);
             return null;
         }
@@ -184,7 +175,7 @@ public class ClinicListingView extends AppCompatActivity {
         }
     }
 
-    public void editClinic(int id){
+    public void editClinic(int id) {
         Intent intent = new Intent(this,EditClinicActivity.class);
         intent.putExtra("editName",clinics.get(id).name);
         intent.putExtra("editId",clinics.get(id).id);
@@ -205,7 +196,7 @@ public class ClinicListingView extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            jsonString = HttpHandler.deleteRequest(MapsActivity.STUDENT_API + "/" + clinicID);
+            jsonString = HttpHandler.deleteRequest(MapsActivity.CLINICS_API + "/" + clinicID);
             return null;
         }
 
@@ -222,7 +213,7 @@ public class ClinicListingView extends AppCompatActivity {
         deleteClinic.execute();
     }
 
-    public void sort(ArrayList<Clinic> clinicArrayList, String keyword){
+    public void sort(ArrayList<Clinic> clinicArrayList, String keyword) {
         sorting = new ArrayList<Clinic>();
         if (clinics.size() < 0) {
             Toast.makeText(this, "Please wait for me to fetch the clinics listing details", Toast.LENGTH_SHORT).show();

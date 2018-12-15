@@ -80,7 +80,7 @@ public class AddClinicActivity extends AppCompatActivity {
         private String status = "";
         @Override
         protected Void doInBackground(Void... voids) {
-            status = HttpHandler.postClinic(MapsActivity.STUDENT_API,clinic);
+            status = HttpHandler.postClinic(MapsActivity.CLINICS_API,clinic);
             return null;
         }
 

@@ -4,20 +4,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class AddRestaurantActivity extends AppCompatActivity {
 
@@ -57,7 +46,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            status = HttpHandler.postRequest(MapsActivity.STUDENT_API, restaurant);
+            status = HttpHandler.postRequest(MapsActivity.CLINICS_API, restaurant);
             return null;
         }
 
