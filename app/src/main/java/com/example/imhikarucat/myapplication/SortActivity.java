@@ -17,7 +17,6 @@ public class SortActivity extends AppCompatActivity {
 
     }
 
-
     public void onConfirmedSearch(View view) {
         Intent intent = new Intent(SortActivity.this,ClinicListingView.class);
         intent.putExtra("filterKey",editText.getText().toString());

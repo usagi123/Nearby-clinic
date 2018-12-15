@@ -42,39 +42,6 @@ public class HttpHandler {
         return builder.toString();
     }
 
-    public static String postRequest(String urlStr, Restaurant restaurant){
-        String status = "";
-        try {
-            //Connect
-            URL url = new URL(urlStr);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
-
-            //Prepare json object
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", restaurant.name);
-            jsonObject.put("rating", restaurant.rating);
-            jsonObject.put("latitute", restaurant.latitute);
-            jsonObject.put("longitute", restaurant.longitute);
-
-            //Write data
-            DataOutputStream outputStream = new DataOutputStream(conn.getOutputStream());
-            outputStream.writeBytes(jsonObject.toString());
-            outputStream.flush();
-            outputStream.close();
-            status = conn.getResponseCode() + ": " + conn.getResponseMessage();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return status;
-    }
-
     //Create method
     public static String postClinic(String urlStr, Clinic clinic){
         String status = "";

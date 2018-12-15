@@ -36,7 +36,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public static final String CLINICS_API = "https://clinicandroidasn2.herokuapp.com/clinics";
     private static final int SET_INTERVAL = 1000000;
-    private static final int FASTEST_INTERVAL = 2000; //milliseconds
+    private static final int FASTEST_INTERVAL = 200000; //milliseconds
 
     private String jsonString = "";
 
