@@ -40,13 +40,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddRestaurantActivity" />
         <activity android:name=".AddClinicActivity" />
         <activity
             android:name=".ClinicListingView"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".EditClinicActivity" />
-        <activity android:name=".SearchViewAcitivity" />
         <activity android:name=".SortActivity"></activity>
     </application>
 

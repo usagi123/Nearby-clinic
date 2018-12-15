@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -41,8 +40,6 @@ public class ClinicListingView extends AppCompatActivity {
         listView = findViewById(R.id.ListView);
         clinics = new ArrayList<Clinic>();
         sorting = new ArrayList<>();
-//        searchbar = findViewById(R.id.searchSpecialization);
-
     }
 
     @Override
@@ -58,8 +55,6 @@ public class ClinicListingView extends AppCompatActivity {
     }
 
     public void onSortClickButton(View view) {
-//        String result = searchbar.getText().toString();
-//        sort(clinics, result);
         Intent intent = new Intent(ClinicListingView.this, SortActivity.class);
         startActivityForResult(intent,1);
     }
@@ -69,7 +64,6 @@ public class ClinicListingView extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             jsonString = HttpHandler.getRequest(MapsActivity.CLINICS_API);
-            Log.d(TAG, "doInBackground: " + jsonString);
             return null;
         }
 
@@ -110,37 +104,28 @@ public class ClinicListingView extends AppCompatActivity {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            showUpMenuActivity showUpMenuActivity = new showUpMenuActivity(ClinicListingView.this, position);
-                            showUpMenuActivity.showPopup(view);
+                            PopupMenu popupMenu = new PopupMenu(ClinicListingView.this, position);
+                            popupMenu.showPopup(view);
                         }
-//                        @Override
-//                        public boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            showUpMenuActivity showUpMenuActivity = new showUpMenuActivity(ClinicListingView.this, position);
-//                            showUpMenuActivity.showPopup(view);
-//                            return true;
-//                        }
-
-
                     });
-                    Log.d(TAG, "onPostExecute: " + clinics.get(0).name);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
-        public class showUpMenuActivity implements PopupMenu.OnMenuItemClickListener {
+        public class PopupMenu implements android.widget.PopupMenu.OnMenuItemClickListener {
 
             private Activity context;
             private Integer clinicID;
 
-            showUpMenuActivity(Activity context, Integer clinicID) {
+            PopupMenu(Activity context, Integer clinicID) {
                 this.context = context;
                 this.clinicID = clinicID;
             }
 
             void showPopup(View v){
-                PopupMenu popupMenu = new PopupMenu(context,v);
+                android.widget.PopupMenu popupMenu = new android.widget.PopupMenu(context,v);
                 popupMenu.setOnMenuItemClickListener(this);
                 popupMenu.inflate(R.menu.popup_layout);
                 popupMenu.show();
@@ -243,7 +228,6 @@ public class ClinicListingView extends AppCompatActivity {
                 filterKey = data.getStringExtra("intentKey");
                 Log.d(TAG, "onActivityResult: "  + filterKey);
                 returnedFiltered = data.getStringExtra("filterKey");
-//                sort(clinics,returnedFiltered);
             }
         }
     }
